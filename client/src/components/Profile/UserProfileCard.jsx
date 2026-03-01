@@ -1,60 +1,35 @@
 import React from 'react'
-import { useAuth } from '../../context/AuthContext';
-
+import { useAuth } from '../../context/AuthContext'
 
 function UserProfileCard() {
+  const { auth } = useAuth()
+  const user = auth?.user
 
-  const {auth}=useAuth();
+  if (!user) return null
+
   return (
-    <>
-    <div class="bg-white overflow-hidden shadow rounded-lg border">
-    <div class="px-4 py-5 sm:px-6">
-        <h3 class="text-lg leading-6 font-medium text-gray-900">
-            User Profile
+    <div className="bg-white overflow-hidden shadow rounded-lg border">
+      <div className="px-4 py-5 sm:px-6">
+        <h3 className="text-lg leading-6 font-medium text-gray-900">
+          User Profile
         </h3>
-        <p class="mt-1 max-w-2xl text-sm text-gray-500">
-            This is some information about the user.
+        <p className="mt-1 max-w-2xl text-sm text-gray-500">
+          Your account information.
         </p>
-    </div>
-    <div class="border-t border-gray-200 px-4 py-5 sm:p-0">
-        <dl class="sm:divide-y sm:divide-gray-200">
-            <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt class="text-sm font-medium text-gray-500">
-                    Username:
-                </dt>
-                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                {auth.user.userName}
-                </dd>
-            </div>
-            <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt class="text-sm font-medium text-gray-500">
-                    Email address
-                </dt>
-                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                {auth.user.userMail}
-                </dd>
-            </div>
-            <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt class="text-sm font-medium text-gray-500">
-                    Phone number
-                </dt>
-                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                    (123) 456-7890
-                </dd>
-            </div>
-            <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt class="text-sm font-medium text-gray-500">
-                    Address
-                </dt>
-                <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                    123 Main St
-                     Anytown, USA 12345
-                </dd>
-            </div>
+      </div>
+      <div className="border-t border-gray-200 px-4 py-5 sm:p-0">
+        <dl className="sm:divide-y sm:divide-gray-200">
+          <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt className="text-sm font-medium text-gray-500">Username</dt>
+            <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{user.userName}</dd>
+          </div>
+          <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt className="text-sm font-medium text-gray-500">Email address</dt>
+            <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{user.userMail}</dd>
+          </div>
         </dl>
+      </div>
     </div>
-</div>
-</>
   )
 }
 

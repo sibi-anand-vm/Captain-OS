@@ -36,14 +36,14 @@ function SignUpForm({onSubmitSignUp}) {
                 <form onSubmit={onSubmitForm} className="space-y-6">
 
                 <div>
-                    <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
+                    <label htmlFor="name" className="block text-sm/6 font-medium text-gray-900">
                       Name
                     </label>
                     <div className="mt-2">
                       <input
                         id="name"
                         name="name"
-                        type="name"
+                        type="text"
                         required
                         autoComplete="name"
                         value={signUpForm.name}
@@ -53,7 +53,7 @@ function SignUpForm({onSubmitSignUp}) {
                     </div>
                   </div>
                   <div>
-                    <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
+                    <label htmlFor="mail" className="block text-sm/6 font-medium text-gray-900">
                       Email address
                     </label>
                     <div className="mt-2">
@@ -95,14 +95,14 @@ function SignUpForm({onSubmitSignUp}) {
                       type="submit"
                       className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
-                      Sign in
+                      Create account
                     </button>
                   </div>
                 </form>
 
               </div>
             </div>
-        )
-      }
+  )
+}
 
 export default SignUpForm
