@@ -13,7 +13,7 @@ const AuthProvider=({children})=>{
 
             const validateToken=async(token)=>{
                 try{
-                let res=await fetch(`${import.meta.env.VITE_BACKEND_URL}/users/validate`,{
+                let res=await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users/validate`,{
                     method:"GET",
                     headers:{
                         "Content-Type":"application/json",
