@@ -8,19 +8,22 @@ const connectDB=require("./config/DBConnector")
 const errorHandler=require("./middleware/errorHandler")
 const userRoutes=require("./routes/userRoutes")
 
-// CORS configuration – required when frontend (e.g. Vercel) and backend (e.g. Render) are on different origins.
-// Set FRONTEND_URL on Render to your Vercel URL with no trailing slash, e.g. https://your-app.vercel.app
+const isProd = process.env.NODE_ENV === 'production';
 const allowedOrigins = (process.env.FRONTEND_URL || '')
   .split(',')
   .map((url) => url.trim().replace(/\/$/, ''))
   .filter(Boolean);
 
+// Local dev: allow localhost and 127.0.0.1 on any port (Vite default 5173, etc.)
+const localOrigin = (origin) =>
+  origin && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
+
 const corsOptions = {
   origin(origin, callback) {
-    // Allow requests with no origin (e.g. Postman, server-to-server)
     if (!origin) return callback(null, true);
-    if (allowedOrigins.length === 0 || !allowedOrigins.includes(origin)) return callback(null, false);
-    callback(null, true);
+    if (!isProd && localOrigin(origin)) return callback(null, true);
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    callback(null, false);
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
