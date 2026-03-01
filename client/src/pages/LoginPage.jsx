@@ -20,7 +20,7 @@ function LoginPage() {
       return;
     }
     try{
-      let res=await fetch(`${import.meta.env.VITE_BACKEND_URL}/users/login`,{
+      let res=await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users/login`,{
         method:"POST",
         headers:{
           "Content-Type":"application/json"
