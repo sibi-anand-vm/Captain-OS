@@ -7,7 +7,7 @@ function HomePage() {
   return (
     <div>
       Homepage
-      <UserProfileCard />
+        <UserProfileCard /> 
     </div>
   )
 }

@@ -55,7 +55,8 @@ const loginUser=asyncHandler(async(req,res)=>{
             userName:existingUser.userName,
             userMail:existingUser.userMail
         }},process.env.JWT_SECRET,{"expiresIn":"2d"});
-        res.status(201).json({message:"Login success",token,existingUser});
+        const user={ id:existingUser._id, userName:existingUser.userName, userMail:existingUser.userMail };
+        res.status(201).json({message:"Login success",token,user});
     }
     else{
         res.status(401);
