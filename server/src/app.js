@@ -6,7 +6,7 @@ dotenv.config()
 
 const connectDB=require("./config/DBConnector")
 const errorHandler=require("./middleware/errorHandler")
-const userRoutes=require("./routes/userRoutes")
+const authRoutes=require("./routes/authRoutes")
 
 const isProd = process.env.NODE_ENV === 'production';
 const allowedOrigins = (process.env.FRONTEND_URL || '')
@@ -33,11 +33,11 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json())
 
-let PORT=process.env.PORT || 5000;
+let PORT=process.env.PORT || 4008;
 
 connectDB();
 
-app.use("/api/users",userRoutes);
+app.use("/api/auth",authRoutes);
 
 app.use(errorHandler)
 

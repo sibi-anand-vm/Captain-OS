@@ -35,17 +35,30 @@ function Navbar() {
           id="navbar-menu"
           className={`${menuOpen ? 'block' : 'hidden'} w-full md:block md:w-auto`}
         >
-          <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700 md:gap-2">
+          <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700 md:gap-2 md:items-center">
             {auth.isLoggedIn ? (
-              <li>
-                <button
-                  type="button"
-                  onClick={handleLogout}
-                  className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:p-0 dark:text-white dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
-                >
-                  Logout
-                </button>
-              </li>
+              <>
+                <li>
+                  <Link
+                    to="/profile"
+                    onClick={() => setMenuOpen(false)}
+                    className="flex items-center justify-center w-9 h-9 rounded-full bg-indigo-600 text-white font-semibold text-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    title="Profile"
+                    aria-label="Open profile"
+                  >
+                    {auth.user?.userName?.charAt(0)?.toUpperCase() || '?'}
+                  </Link>
+                </li>
+                <li>
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:p-0 dark:text-white dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
+                  >
+                    Logout
+                  </button>
+                </li>
+              </>
             ) : (
               <>
                 <li>
