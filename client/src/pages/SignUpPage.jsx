@@ -12,7 +12,7 @@ function SignUpPage() {
       return
     }
     try {
-      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users`, {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/auth`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ signUpForm }),
