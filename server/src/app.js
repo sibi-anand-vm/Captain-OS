@@ -7,6 +7,8 @@ dotenv.config()
 const connectDB=require("./config/DBConnector")
 const errorHandler=require("./middleware/errorHandler")
 const authRoutes=require("./routes/authRoutes")
+const taskRoutes=require("./routes/taskRoutes")
+const validateToken = require("./middleware/validateToken");
 
 const isProd = process.env.NODE_ENV === 'production';
 const allowedOrigins = (process.env.FRONTEND_URL || '')
@@ -37,7 +39,14 @@ let PORT=process.env.PORT || 4008;
 
 connectDB();
 
+
+app.use("/api/health",(req,res)=>{
+    res.json({status:"ok"})
+});
+
 app.use("/api/auth",authRoutes);
+app.use("/api/tasks",validateToken,taskRoutes);
+
 
 app.use(errorHandler)
 
