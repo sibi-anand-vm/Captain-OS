@@ -2,6 +2,7 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+
 const register = async (signUpForm) => {
     if (!signUpForm || !signUpForm.name || !signUpForm.mail || !signUpForm.password) {
         const error = new Error("Required all fields for registering user");
