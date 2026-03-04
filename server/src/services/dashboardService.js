@@ -20,7 +20,7 @@ const getWeeklyStats = async (userId) => {
   const percentage =
     total === 0 ? 0 : ((completed / total) * 100).toFixed(2);
 
-  return Number(percentage);
+  return { totalTaskThisWeek: total, completedTaskThisWeek: completed, percentage: Number(percentage) };
 };
 
 // Streak
@@ -62,7 +62,7 @@ const getDashboard = async (userId) => {
   const completionPercentage =
     total === 0 ? 0 : ((completed / total) * 100).toFixed(2);
 
-  const weekly = await getWeeklyStats(userId);
+  const weeklyStats = await getWeeklyStats(userId);
   const streak = await calculateStreak(userId);
 
   logger.info({
@@ -71,7 +71,7 @@ const getDashboard = async (userId) => {
     totalTasks: total,
     completedTasks: completed,
     completionPercentage: completionPercentage,
-    weeklyCompletionPercentage: weekly,
+    weeklyStats: weeklyStats,
     currentStreak: streak
   });
 
@@ -79,7 +79,7 @@ const getDashboard = async (userId) => {
     totalTasks: total,
     completedTasks: completed,
     completionPercentage: Number(completionPercentage),
-    weeklyCompletionPercentage: weekly,
+    weeklyStats: weeklyStats,
     currentStreak: streak
   };
 };
