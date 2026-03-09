@@ -16,6 +16,13 @@ const getUserTasks = async (userId, filters = {}) => {
     .sort({ createdAt: -1 });
 };
 
+// Get Recent Tasks of User (last 5)
+const getUserRecentTasks = async (userId) => {
+  return await Task.find({ user: userId })
+    .sort({ createdAt: -1 })
+    .limit(5);
+};
+
 // Update Task
 const updateTask = async (userId, taskId, updates) => {
   const task = await Task.findOneAndUpdate(
@@ -58,6 +65,7 @@ const markComplete = async (userId, taskId) => {
 module.exports = {
   createTask,
   getUserTasks,
+  getUserRecentTasks,
   updateTask,
   deleteTask,
   markComplete
