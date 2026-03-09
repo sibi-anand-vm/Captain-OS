@@ -42,6 +42,27 @@ exports.getTasks = async (req, res) => {
   }
 };
 
+
+// Get My Recent Tasks
+exports.getRecentTasks = async (req, res) => {
+  try {
+    const tasks = await taskService.getUserRecentTasks(req.user.id);
+    logger.info({
+      message: "Fetched user recent tasks",
+      count: tasks.length,
+      user: req.user.id
+    });
+    res.json(tasks);
+  } catch (err) {
+    logger.error({
+      message: "Failed to fetch user recent tasks",
+      error: err.message,
+      user: req.user.id
+    });
+    res.status(500).json({ message: err.message });
+  }
+};
+
 // Update
 exports.updateTask = async (req, res) => {
   try {
