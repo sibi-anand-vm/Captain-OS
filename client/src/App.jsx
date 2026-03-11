@@ -18,11 +18,11 @@ function App() {
   return (
     <>
       <BrowserRouter>
-      <Navbar />
         <Routes>
           <Route path='/' element={<LoginPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/Profile" element={<UserProfileCard />} />
           
           <Route path="/home" element={
             <ProtectedRoute>

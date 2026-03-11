@@ -1,17 +1,16 @@
-import React, { useState } from 'react'
-import { useAuth } from '../../context/AuthContext'
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useState } from "react";
+import { useAuth } from "../../context/AuthContext";
+import { useNavigate, Link } from "react-router-dom";
 
-function Navbar() {
-  const { auth, logout } = useAuth()
-  const navigate = useNavigate()
-  const [menuOpen, setMenuOpen] = useState(false)
+function Navbar({ onBrandClick }) {
+  const { auth, logout } = useAuth();
+  const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLogout = () => {
-    logout()
-    setMenuOpen(false)
-    navigate('/')
-  }
+    logout();
+    navigate("/");
+  };
 
   return (
     <nav className="bg-white border-gray-200 dark:bg-gray-900">
@@ -72,8 +71,39 @@ function Navbar() {
           </ul>
         </div>
       </div>
+
+      {menuOpen && (
+        <div className="md:hidden px-4 pb-4">
+          <div className="relative">
+
+            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+              <svg
+                className="w-5 h-5 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m21 21-4.35-4.35m1.85-5.65a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z"
+                />
+              </svg>
+            </div>
+
+            <input
+              type="text"
+              placeholder="Search..."
+              className="w-full bg-gray-800 text-gray-300
+                         pl-10 pr-4 py-2 rounded-lg
+                         focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+        </div>
+      )}
     </nav>
-  )
+  );
 }
 
-export default Navbar
+export default Navbar;
