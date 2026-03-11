@@ -4,7 +4,8 @@ import SignUpPage from './pages/SignUpPage';
 import HomePage from './pages/HomePage';
 import { useAuth } from './context/AuthContext';
 import Loading from './components/Loading/Loading';
-import Navbar from './components/Navbar/Navbar';
+import UserProfileCard from './components/Profile/UserProfileCard';
+
 
 function App() {
   const { auth } = useAuth();
@@ -17,11 +18,11 @@ function App() {
   return (
     <>
       <BrowserRouter>
-      <Navbar />
         <Routes>
           <Route path='/' element={<LoginPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/Profile" element={<UserProfileCard />} />
           
           <Route path="/home" element={
             <ProtectedRoute>
