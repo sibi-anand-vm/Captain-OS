@@ -4,8 +4,8 @@ import SignUpPage from './pages/SignUpPage';
 import HomePage from './pages/HomePage';
 import { useAuth } from './context/AuthContext';
 import Loading from './components/Loading/Loading';
-import UserProfileCard from './components/Profile/UserProfileCard';
-
+import Navbar from './components/Navbar/Navbar';
+import ProfilePage from './pages/ProfilePage';
 
 function App() {
   const { auth } = useAuth();
@@ -27,6 +27,11 @@ function App() {
           <Route path="/home" element={
             <ProtectedRoute>
             <HomePage />
+            </ProtectedRoute>} />
+
+          <Route path="/profile" element={
+            <ProtectedRoute>
+            <ProfilePage />
             </ProtectedRoute>} />
 
         </Routes>

@@ -13,99 +13,62 @@ function Navbar({ onBrandClick }) {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-20 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 shadow-lg border-b border-gray-700">
-      <div className="max-w-7xl mx-auto px-4">  {/* container keeps content centred even when fixed */}
-        <div className="flex items-center justify-between h-16">
-          <div className="flex items-center gap-2 cursor-pointer" onClick={onBrandClick}>
-            <span className="text-white text-xl font-bold tracking-wide">
-              Captain<span className="text-indigo-500">OS</span>
-            </span>
-          </div>
-
-          <div className="hidden md:flex flex-1 mx-6">
-            <div className="relative w-full">
-              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <svg
-                  className="w-5 h-5 text-gray-400"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="m21 21-4.35-4.35m1.85-5.65a7.5 7.5 0 1 1-15 0 7.5 7.5 0 0 1 15 0Z"
-                  />
-                </svg>
-              </div>
-
-              
-              <input
-                type="text"
-                placeholder="Search tasks, projects, people..."
-                className="w-full bg-gray-800 text-gray-300 placeholder-gray-500
-                           pl-10 pr-4 py-2 rounded-lg
-                           focus:outline-none focus:ring-2 focus:ring-indigo-500
-                           transition"
-              />
-            </div>
-          </div>
-          <div className="flex items-center gap-6">
-
-            <button className="text-gray-400 hover:text-white transition">
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </button>
-
-            <div className="flex items-center gap-3">
-
-              <Link
-                to="/Profile"
-                className="flex items-center gap-2 hover:bg-gray-700 px-3 py-1 rounded-lg transition"
-              >
-                <img
-                  src={
-                    auth?.user?.avatar ||
-                    "https://cdn-icons-png.flaticon.com/512/9512/9512683.png"
-                  }
-                  alt="Profile"
-                  className="w-9 h-9 rounded-full border border-gray-600"
-                />
-
-                <span className="hidden sm:block text-gray-300 text-sm font-medium">
-                  {auth?.user?.name || auth?.user?.email || "User"}
-                </span>
-              </Link>
-
-              <button
-                onClick={handleLogout}
-                className="text-sm bg-indigo-600 hover:bg-indigo-700 px-3 py-1 rounded-md text-white transition"
-              >
-                Logout
-              </button>
-
-            </div>
-
-            <button
-              onClick={() => setMenuOpen(!menuOpen)}
-              className="md:hidden text-gray-400 hover:text-white text-xl"
-            >
-              ☰
-            </button>
-
-          </div>
+    <nav className="bg-white border-gray-200 dark:bg-gray-900">
+      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+        <Link to="/" className="flex items-center space-x-3 rtl:space-x-reverse">
+          <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">CaptainOS</span>
+        </Link>
+        <button
+          type="button"
+          className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+          aria-expanded={menuOpen}
+          aria-controls="navbar-menu"
+          onClick={() => setMenuOpen((o) => !o)}
+        >
+          <span className="sr-only">Open main menu</span>
+          <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h15M1 7h15M1 13h15" />
+          </svg>
+        </button>
+        <div
+          id="navbar-menu"
+          className={`${menuOpen ? 'block' : 'hidden'} w-full md:block md:w-auto`}
+        >
+          <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700 md:gap-2 md:items-center">
+            {auth.isLoggedIn ? (
+              <>
+                <li>
+                  <Link
+                    to="/profile"
+                    onClick={() => setMenuOpen(false)}
+                    className="flex items-center justify-center w-9 h-9 rounded-full bg-indigo-600 text-white font-semibold text-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    title="Profile"
+                    aria-label="Open profile"
+                  >
+                    {auth.user?.userName?.charAt(0)?.toUpperCase() || '?'}
+                  </Link>
+                </li>
+                <li>
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:p-0 dark:text-white dark:hover:bg-gray-700 md:dark:hover:bg-transparent"
+                  >
+                    Logout
+                  </button>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <Link to="/signup" onClick={() => setMenuOpen(false)} className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:p-0 dark:text-white dark:hover:bg-gray-700 md:dark:hover:bg-transparent">Signup</Link>
+                </li>
+                <li>
+                  <Link to="/" onClick={() => setMenuOpen(false)} className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:p-0 dark:text-white dark:hover:bg-gray-700 md:dark:hover:bg-transparent">Login</Link>
+                </li>
+              </>
+            )}
+          </ul>
         </div>
       </div>
 
