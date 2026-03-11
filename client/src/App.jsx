@@ -5,7 +5,7 @@ import HomePage from './pages/HomePage';
 import { useAuth } from './context/AuthContext';
 import Loading from './components/Loading/Loading';
 import Navbar from './components/Navbar/Navbar';
-import ProfilePage from './pages/ProfilePage';
+import UserProfileCard from './pages/ProfilePage';
 
 function App() {
   const { auth } = useAuth();
@@ -22,17 +22,13 @@ function App() {
           <Route path='/' element={<LoginPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
-          <Route path="/Profile" element={<UserProfileCard />} />
+          <Route path="/profile" element={<UserProfileCard />} />
           
           <Route path="/home" element={
             <ProtectedRoute>
             <HomePage />
             </ProtectedRoute>} />
 
-          <Route path="/profile" element={
-            <ProtectedRoute>
-            <ProfilePage />
-            </ProtectedRoute>} />
 
         </Routes>
       </BrowserRouter>
