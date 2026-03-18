@@ -127,14 +127,10 @@ const Dashboard = ({ sidebarOpen = true, sidebarHovered = false }) => {
       <ToastContainer />
 
       <div
-        className={`mx-auto transition-all duration-300 ease-in-out ${
-          sidebarOpen
-            ? sidebarHovered
-              ? "max-w-6xl pl-8 pr-8"
-              : "max-w-6xl pl-8 pr-8"
-            : "max-w-5xl px-8"
-        }`}
-      >
+  className={`mx-auto transition-all duration-300 ease-in-out ${
+    sidebarOpen ? "max-w-8xl px-6" : "max-w-5xl px-8"
+  }`}
+>
 
         
         <div className="mb-8">

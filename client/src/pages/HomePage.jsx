@@ -14,7 +14,7 @@ function HomePage() {
 
       <main
         className={`pt-16 pr-8 transition-all duration-300 ${
-          expanded ? "ml-64" : "ml-20"
+          expanded ? "ml-80" : "ml-40"
         }`}
       >
         <Dashboard />
