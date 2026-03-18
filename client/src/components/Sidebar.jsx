@@ -10,26 +10,24 @@ import {
   Settings,
 } from "lucide-react";
 
-function Sidebar({ isOpen = true }) {
+function Sidebar({ expanded, setExpanded }) {
   const location = useLocation();
 
   const menuItems = [
     { name: "Dashboard", path: "/home", icon: <LayoutDashboard size={20} /> },
     { name: "Tasks", path: "/tasks", icon: <CheckSquare size={20} /> },
     { name: "DSA Tracker", path: "/dsa", icon: <Code2 size={20} /> },
-    { name: "Projects", path: "/projects", icon: <Folder size={20} /> },
-    { name: "Analytics", path: "/analytics", icon: <BarChart3 size={20} /> },
-    { name: "Team", path: "/team", icon: <Users size={20} /> },
-    { name: "Settings", path: "/settings", icon: <Settings size={20} /> },
   ];
 
   return (
     <div
-      className={`${isOpen ? '' : 'hidden'} group fixed top-16 left-0 h-[calc(100vh-4rem)]
-                 w-20 hover:w-64
-                 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900
-                 border-r border-gray-800
-                 transition-all duration-300 ease-in-out`}
+      onMouseEnter={() => setExpanded(true)}
+      onMouseLeave={() => setExpanded(false)}
+      className={`fixed top-16 left-0 h-[calc(100vh-4rem)]
+      ${expanded ? "w-64" : "w-20"}
+      bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900
+      border-r border-gray-800
+      transition-all duration-300`}
     >
       <div className="mt-10 space-y-3 px-3">
         {menuItems.map((item) => {
@@ -47,13 +45,11 @@ function Sidebar({ isOpen = true }) {
                   : "text-gray-400 hover:bg-gray-800 hover:text-white"
               }`}
             >
-              {/* Icon */}
               <span>{item.icon}</span>
 
-              {/* Text (hidden when minimized) */}
-              <span className="opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap">
-                {item.name}
-              </span>
+              {expanded && (
+                <span className="whitespace-nowrap">{item.name}</span>
+              )}
             </Link>
           );
         })}

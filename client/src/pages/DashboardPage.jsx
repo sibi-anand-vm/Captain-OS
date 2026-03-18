@@ -4,41 +4,83 @@ import RecentTasks from "../components/RecentTasks/RecentTasks";
 import WeeklyProgress from "../components/WeeklyProgress/WeeklyProgress";
 import { FaTasks, FaCheckCircle, FaChartLine, FaFire } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
-import {ToastContainer,toast} from 'react-toastify'
+import { ToastContainer, toast } from "react-toastify";
 
 const Dashboard = ({ sidebarOpen = true, sidebarHovered = false }) => {
+
   const [dashboardStats, setDashboardStats] = useState(null);
+  const [recentTasks, setRecentTasks] = useState([]);
   const [loading, setLoading] = useState(true);
+
   const { auth } = useAuth();
 
-  useEffect(() => {
-    const fetchDashboardData = async () => {
-      try {
-        let token = auth.token;
-        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/tasks/dashboard/summary`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-          }
-        });
+  
+  const getGreeting = () => {
+    const hour = new Date().getHours();
 
-        const data = await res.json();
-        if (res.ok) {
-          setDashboardStats(data);
-        } else {
-          toast.error("API Error:", data);
+    if (hour < 12) return "Good Morning";
+    if (hour < 18) return "Good Afternoon";
+    return "Good Evening";
+  };
+
+  useEffect(() => {
+
+    const fetchDashboardData = async () => {
+
+      try {
+
+        const token = auth?.token;
+
+        
+        const summaryRes = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/api/tasks/dashboard/summary`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`
+            }
+          }
+        );
+
+        const summaryData = await summaryRes.json();
+
+        if (summaryRes.ok) {
+          setDashboardStats(summaryData);
         }
+
+        
+        const taskRes = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/api/tasks`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`
+            }
+          }
+        );
+
+        const taskData = await taskRes.json();
+
+        if (taskRes.ok) {
+          
+          setRecentTasks(taskData.slice(0, 5));
+        }
+
       } catch (err) {
-        toast.error("Error fetching dashboard data:", err.message);
+        toast.error(err.message || "Error fetching dashboard data");
       } finally {
         setLoading(false);
       }
+
     };
 
     fetchDashboardData();
+
   }, []);
 
+  
   const dashboardData = [
     {
       title: "Total Tasks",
@@ -71,88 +113,71 @@ const Dashboard = ({ sidebarOpen = true, sidebarHovered = false }) => {
   ];
 
   
-  const recentTasks = [
-    {
-      id: 1,
-      name: "Implement user auth flow",
-      status: "In Progress",
-      dueDate: "Oct 28",
-      priority: "High",
-      completed: false,
-    },
-    {
-      id: 2,
-      name: "Fix UI bugs on Dashboard",
-      status: "Completed",
-      dueDate: "Oct 27",
-      priority: "Medium",
-      completed: true,
-    },
-    {
-      id: 3,
-      name: "Review PR #104: Design System",
-      status: "In Progress",
-      dueDate: "Oct 29",
-      priority: "High",
-      completed: false,
-    },
-    {
-      id: 4,
-      name: "Setup CI/CD pipeline",
-      status: "To Do",
-      dueDate: "Oct 30",
-      priority: "Medium",
-      completed: false,
-    },
-    {
-      id: 5,
-      name: "Update API documentation",
-      status: "Completed",
-      dueDate: "Oct 31",
-      priority: "Low",
-      completed: true,
-    },
-  ];
-return (
-  <div className="w-full bg-slate-900 min-h-screen pt-8 pb-8">
-    <div className={`mx-auto transition-all duration-300 ease-in-out ${
-      sidebarOpen ? (sidebarHovered ? 'max-w-6xl pl-8 pr-8' : 'max-w-6xl pl-8 pr-8') : 'max-w-5xl px-8'
-    }`}>
-      
-      <div className="mb-8">
-        <h1 className="text-2xl font-semibold text-white">
-          Good Evening, Alex 👋
-        </h1>
-        <p className="text-slate-400 text-sm mt-1">
-          Let's finish the day strong. Here's your overview.
-        </p>
+  if (loading) {
+    return (
+      <div className="text-white p-8">
+        Loading dashboard...
       </div>
+    );
+  }
 
-    
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-      {dashboardData.map((item, index) => (
-        <DashboardCard
-          key={index}
-          title={item.title}
-          value={item.value}
-          subtitle={item.subtitle}
-          icon={item.icon}
-          color={item.color}
+  return (
+    <div className="w-full bg-slate-900 min-h-screen pt-8 pb-8">
+
+      <ToastContainer />
+
+      <div
+  className={`mx-auto transition-all duration-300 ease-in-out ${
+    sidebarOpen ? "max-w-8xl px-6" : "max-w-5xl px-8"
+  }`}
+>
+
+        
+        <div className="mb-8">
+          <h1 className="text-2xl font-semibold text-white">
+            {getGreeting()}, {auth?.user?.userName || "User"} 👋
+          </h1>
+
+          <p className="text-slate-400 text-sm mt-1">
+            Let's finish the day strong. Here's your overview.
+          </p>
+        </div>
+
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+          {dashboardData.map((item, index) => (
+            <DashboardCard
+              key={index}
+              title={item.title}
+              value={item.value}
+              subtitle={item.subtitle}
+              icon={item.icon}
+              color={item.color}
+            />
+          ))}
+        </div>
+
+        
+        <WeeklyProgress
+          tasksTotal={dashboardStats?.weeklyStats?.totalTaskThisWeek || 0}
+          tasksCompleted={dashboardStats?.weeklyStats?.completedTaskThisWeek || 0}
         />
-      ))}
+
+      
+        <RecentTasks
+          tasks={recentTasks.map((task) => ({
+            id: task._id,
+            name: task.title,
+            status: task.completed ? "Completed" : "In Progress",
+            dueDate: new Date(task.dueDate).toLocaleDateString(),
+            priority: task.priority,
+            completed: task.completed
+          }))}
+        />
+
+      </div>
     </div>
-
-    
-    <WeeklyProgress 
-      tasksTotal={dashboardStats?.weeklyStats?.totalTaskThisWeek || 0}
-      tasksCompleted={dashboardStats?.weeklyStats?.completedTaskThisWeek || 0}
-    />
-
-    <RecentTasks tasks={recentTasks} />
-    </div>
-
-  </div>
-);
+  );
 };
 
 export default Dashboard;
