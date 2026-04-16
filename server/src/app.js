@@ -8,6 +8,7 @@ const connectDB=require("./config/DBConnector")
 const errorHandler=require("./middleware/errorHandler")
 const authRoutes=require("./routes/authRoutes")
 const taskRoutes=require("./routes/taskRoutes")
+const leetcodeRoutes = require("./routes/leetcodeRoutes");
 const validateToken = require("./middleware/validateToken");
 
 const isProd = process.env.NODE_ENV === 'production';
@@ -16,7 +17,6 @@ const allowedOrigins = (process.env.FRONTEND_URL || '')
   .map((url) => url.trim().replace(/\/$/, ''))
   .filter(Boolean);
 
-// Local dev: allow localhost and 127.0.0.1 on any port (Vite default 5173, etc.)
 const localOrigin = (origin) =>
   origin && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
 
@@ -46,7 +46,7 @@ app.use("/api/health",(req,res)=>{
 
 app.use("/api/auth",authRoutes);
 app.use("/api/tasks",validateToken,taskRoutes);
-
+app.use("/api/leetcode",validateToken,leetcodeRoutes);
 
 app.use(errorHandler)
 
