@@ -66,12 +66,15 @@ async function fetchLeetCodeData(username) {
 
 function formatLeetCodeData(payload, username) {
   const user = payload?.matchedUser;
+  let error = null;
 
   logger.info(`Formatting LeetCode data for user: ${username}`);
 
   if (!user) {
     logger.warn(`No user data found for username: ${username}`);
-    throw new Error(`Invalid LeetCode username: ${username}`);
+    error = new Error(`Invalid LeetCode username: ${username}`);
+    error.statusCode = 400;
+    throw error;
   }
 
   const solved = user?.submitStats?.acSubmissionNum || [];
@@ -132,9 +135,16 @@ function formatLeetCodeData(payload, username) {
 }
 
 async function syncLeetcodeService(userId, username) {
+
+  let error = null;
+
   logger.info(`Syncing LeetCode for user ${userId}`);
 
-  if (!username) throw new Error("Username required");
+  if (!username) {
+    error = new Error("Username required");
+    error.statusCode = 400;
+    throw error;
+  }
 
   const data = await fetchLeetCodeData(username);
 
@@ -153,10 +163,18 @@ async function syncLeetcodeService(userId, username) {
 }
 
 async function getDashboardService(userId) {
+
+  let error = null;
+
   logger.info(`Fetching dashboard for user ${userId}`);
 
   const data = await Leetcode.findOne({ user: userId });
-  if (!data) throw new Error("No data found. Please connect LeetCode first.");
+
+  if (!data) {
+    error = new Error("No data found. Please connect LeetCode first.");
+    error.statusCode = 404;
+    throw error;
+  }
 
   if (!data.lastSynced) return data;
 
@@ -182,8 +200,15 @@ async function disconnectLeetcodeService(userId) {
 }
 
 async function updateLeetcodeUsernameService(userId, username) {
+
+  let error = null;
+
   logger.info(`Updating username for user ${userId}`);
-  if (!username) throw new Error("Username required");
+  if (!username) {
+    error = new Error("Username required");
+    error.statusCode = 400;
+    throw error;
+  }
 
   const data = await fetchLeetCodeData(username);
 

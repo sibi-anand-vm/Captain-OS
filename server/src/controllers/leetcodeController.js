@@ -10,7 +10,11 @@ const {
 
 const requireUser = (req) => {
   const userId = req?.user?.id;
-  if (!userId) throw new Error("Unauthorized");
+  if (!userId){
+    let error = new Error("User authentication required");
+    error.statusCode = 401;
+    throw error;
+  }
   return userId;
 };
 

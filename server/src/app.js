@@ -2,6 +2,7 @@ const express=require("express")
 const dotenv=require("dotenv")
 const cors=require("cors")
 const app=express();
+
 dotenv.config()
 
 const connectDB=require("./config/DBConnector")
@@ -9,6 +10,8 @@ const errorHandler=require("./middleware/errorHandler")
 const authRoutes=require("./routes/authRoutes")
 const taskRoutes=require("./routes/taskRoutes")
 const leetcodeRoutes = require("./routes/leetcodeRoutes");
+const resumeRoutes = require("./routes/resumeRoutes");
+const interviewApplicationRoutes = require("./routes/interviewApplicationRoutes");
 const validateToken = require("./middleware/validateToken");
 
 const isProd = process.env.NODE_ENV === 'production';
@@ -47,6 +50,8 @@ app.use("/api/health",(req,res)=>{
 app.use("/api/auth",authRoutes);
 app.use("/api/tasks",validateToken,taskRoutes);
 app.use("/api/leetcode",validateToken,leetcodeRoutes);
+app.use("/api/resumes",validateToken, resumeRoutes);
+app.use("/api/applications",validateToken, interviewApplicationRoutes);
 
 app.use(errorHandler)
 

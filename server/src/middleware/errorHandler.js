@@ -1,10 +1,17 @@
 const constants = require("../constants");
-const logger = require("../utils/logger"); // add logger
+const logger = require("../utils/logger");
 
 const errorHandler = (err, req, res, next) => {
-  let statusCode = res.statusCode && res.statusCode !== 200
-    ? res.statusCode
-    : 500;
+  const statusCodeFromError =
+    Number.isInteger(err?.statusCode) ? err.statusCode :
+    Number.isInteger(err?.status) ? err.status :
+    undefined;
+
+  let statusCode = statusCodeFromError ||
+    ((res.statusCode && res.statusCode !== 200) ? res.statusCode : undefined) ||
+    500;
+
+  res.statusCode = statusCode;
 
   logger.error({
     message: err.message,

@@ -4,8 +4,11 @@ const jwt = require("jsonwebtoken");
 
 
 const register = async (signUpForm) => {
+
+    let error=null;
+
     if (!signUpForm || !signUpForm.name || !signUpForm.mail || !signUpForm.password) {
-        const error = new Error("Required all fields for registering user");
+        error = new Error("Required all fields for registering user");
         error.statusCode = 400;
         throw error;
     }
@@ -13,7 +16,7 @@ const register = async (signUpForm) => {
     const existingUser = await User.findOne({ userMail: signUpForm.mail });
 
     if (existingUser) {
-        const error = new Error("Mail already exists");
+        error = new Error("Mail already exists");
         error.statusCode = 409;
         throw error;
     }
@@ -37,8 +40,11 @@ const register = async (signUpForm) => {
 };
 
 const login = async (loginForm) => {
+
+    let error = null;
+
     if (!loginForm || !loginForm.mail || !loginForm.password) {
-        const error = new Error("Required all fields for login");
+        error = new Error("Required all fields for login");
         error.statusCode = 400;
         throw error;
     }
@@ -46,7 +52,7 @@ const login = async (loginForm) => {
     const existingUser = await User.findOne({ userMail: loginForm.mail });
 
     if (!existingUser) {
-        const error = new Error("User mail not exists");
+        error = new Error("User mail not exists");
         error.statusCode = 401;
         throw error;
     }
@@ -54,7 +60,7 @@ const login = async (loginForm) => {
     const isMatch = await bcrypt.compare(loginForm.password, existingUser.password);
 
     if (!isMatch) {
-        const error = new Error("Incorrect password entered");
+        error = new Error("Incorrect password entered");
         error.statusCode = 401;
         throw error;
     }
